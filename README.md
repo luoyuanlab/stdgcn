@@ -1,6 +1,6 @@
 # ![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg)  **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
 
-<img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg" width="200px" />  
+<img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg" height="200px" />  
 
 #  **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
 
