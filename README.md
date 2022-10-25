@@ -6,21 +6,21 @@ Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN
 
 ![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Figure%201.jpg)
 
-**Requirements**
-torch == 1.11.0
-numpy == 1.21.6
-pandas == 1.3.5
-scanpy == 1.9.1
-matplotlib == 3.5.1
-scipy == 1.7.3
-tqdm == 4.64.0
-sklearn == 1.0.2
-scanorama == 1.7.2
-random
-pickle
-time
-math
-copy
+**Requirements**  
+torch == 1.11.0  
+numpy == 1.21.6  
+pandas == 1.3.5  
+scanpy == 1.9.1  
+matplotlib == 3.5.1  
+scipy == 1.7.3  
+tqdm == 4.64.0  
+sklearn == 1.0.2  
+scanorama == 1.7.2  
+random  
+pickle  
+time  
+math  
+copy  
 
 **The example dataset**
 The included spatial transcriptomic (ST) dataset is from Zhu et al. [1], which includes a seqFISH+ slice from the sub-ventricular zone (SVZ) of a mouse somatosensory (SS) region. The resolution of this dataset is single cell-level. We resampled the cells into multiple square pixel areas. Cells within each square pixel area were merged into a synthetic spot. We chose the 200 × 200 square pixel area for resampling. Spots with cells less than two were discarded. The raw single-cell ST data was also used as the single cell reference. All example data files are stored in “./data”
