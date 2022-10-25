@@ -1,3 +1,25 @@
+/*
+<div class="item">
+  <div class="pic">...</div>
+  <div class="content">...</div>
+</div>
+
+================================
+
+  ########   -----------------
+  ########   -----------------
+  ########   -----------------
+  ########   -----------------
+             ------
+
+================================
+
+*/
+
+.item .pic { float:left;margin-right:10px; }
+.item .content { overflow:hidden;zoom:1; } /* 或用display:table-cell */
+
+
 <img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg" height="200px" />  <br />
 #  **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
 
