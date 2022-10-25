@@ -1,6 +1,6 @@
 # ![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg)  **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
 
-# <img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg" width="200px" style="float:right; margin: 5px;" /> **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
+# <img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/logo-design-2.jpg" width="200px"; style="float:right; margin: 5px;" /> **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
 
 Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN) is a graph-based deep learning framework that leverages cell type profiles learned from single-cell data to deconvolve the cell type mixtures of spatial transcriptomics data.
 
