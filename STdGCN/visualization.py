@@ -24,7 +24,7 @@ def draw_pie(dist, xpos, ypos, size, colors, ax):
 
 
 
-def plot_frac_results(predict, cell_type_list, coordinates, file_name=None, point_size=1000, index=0.0009, if_show=True, color_dict=None):
+def plot_frac_results(predict, cell_type_list, coordinates, file_name=None, point_size=1000, size_coefficient=0.0009, if_show=True, color_dict=None):
     
     coordinates.columns = ['coor_X', 'coor_Y']
     labels = cell_type_list
@@ -47,7 +47,7 @@ def plot_frac_results(predict, cell_type_list, coordinates, file_name=None, poin
         str_len = max(str_len, len(item))
     extend_region = str_len/15 + 3
     
-    fig, ax = plt.subplots(figsize=(len(coordinates['coor_X'].unique())*point_size*index+extend_region, len(coordinates['coor_Y'].unique())*point_size*index))
+    fig, ax = plt.subplots(figsize=(len(coordinates['coor_X'].unique())*point_size*size_coefficient+extend_region, len(coordinates['coor_Y'].unique())*point_size*size_coefficient))
     
     for i in tqdm(range(predict.shape[0]), desc="Plotting pie plots:"):
         ax = draw_pie(predict[i], coordinates['coor_X'].values[i], coordinates['coor_Y'].values[i], 

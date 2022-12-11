@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import time
 import scanpy as sc
+import multiprocessing
 
 
 
@@ -34,19 +35,26 @@ class autoencoder(nn.Module):
         
         return en, de, [self.encoder, self.decoder]
 
-def auto_train(model, epoch_n, loss_fn, optimizer, data, cpu_num=10):
+def auto_train(model, epoch_n, loss_fn, optimizer, data, cpu_num=-1, device='GPU'):
     
-    torch.set_num_threads(cpu_num)
+    if cpu_num == -1:
+        cores = multiprocessing.cpu_count()
+        torch.set_num_threads(cores)
+    else:
+        torch.set_num_threads(cpu_num)
     
-    if torch.cuda.is_available():
-        model = model.cuda()
-    time_open = time.time()
+    if device == 'GPU':
+        if torch.cuda.is_available():
+            model = model.cuda()
+            data = data.cuda()
 
     for epoch in range(epoch_n):
-        train_cost = 0
+        try:
+            torch.cuda.empty_cache()
+        except:
+            pass
         
-        if torch.cuda.is_available():
-            data = data.cuda()
+        train_cost = 0       
             
         optimizer.zero_grad()
         en, de, _ = model(data)
@@ -55,8 +63,8 @@ def auto_train(model, epoch_n, loss_fn, optimizer, data, cpu_num=10):
         
         loss.backward()
         optimizer.step()
-            
-    time_end = time.time() - time_open
     
-    return en
+    torch.cuda.empty_cache()
+    
+    return en.cpu()
 

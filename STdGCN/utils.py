@@ -4,10 +4,11 @@ import numpy as np
 import pandas as pd
 import scanpy as sc
 import anndata
+import multiprocessing
 from tqdm.notebook import tqdm
 import random
 from sklearn.decomposition import NMF
-import scanorama
+
 
 from .autoencoder import *
 
@@ -170,20 +171,24 @@ def pseudo_spot_generation(sc_exp,
                            max_cell_number_in_spot,
                            max_cell_types_in_spot,
                            generation_method,
+                           n_jobs = -1
                           ):
     
     cell_type_num = len(sc_exp.obs['cell_type'].unique())
     
+    cores = multiprocessing.cpu_count()
+    if n_jobs == -1:
+        pool = multiprocessing.Pool(processes=cores)
+    else:
+        pool = multiprocessing.Pool(processes=n_jobs)
+    args = [(sc_exp, min_cell_number_in_spot, max_cell_number_in_spot, max_cell_types_in_spot, generation_method) for i in range(spot_num)]
+    generated_spots = pool.starmap(generate_a_spot, tqdm(args, desc='Generating pseudo-spots'))
+    
     pseudo_spots = []
     pseudo_spots_table = np.zeros((spot_num, sc_exp.shape[1]), dtype=float)
     pseudo_fraction_table = np.zeros((spot_num, cell_type_num), dtype=float)
-    for i in tqdm(range(spot_num)):
-        one_spot = generate_a_spot(sc_exp, 
-                                   min_cell_number_in_spot, 
-                                   max_cell_number_in_spot,
-                                   max_cell_types_in_spot,
-                                   generation_method,
-                                   )
+    for i in range(spot_num):
+        one_spot = generated_spots[i]
         pseudo_spots.append(one_spot)
         pseudo_spots_table[i] = one_spot.X.sum(axis=0)
         for j in one_spot.obs.index:
@@ -213,7 +218,8 @@ def data_integration(real,
                      autoencoder_epoches=2000,
                      autoencoder_LR=1e-3,
                      autoencoder_drop=0,
-                     cpu_num=10,
+                     cpu_num=-1,
+                     AE_device='GPU'
                     ):
     
     if batch_removal_method == 'mnn':
@@ -238,6 +244,7 @@ def data_integration(real,
                                    optimizer=optimizer_ae, 
                                    data=data,
                                    cpu_num=cpu_num,
+                                   device=AE_device
                                   ).detach().numpy()
             if scale == True:
                 embedding = (embedding-embedding.mean(axis=0))/embedding.std(axis=0)
@@ -255,6 +262,7 @@ def data_integration(real,
         table.insert(0, 'ST_type', ['real']*real.shape[0]+['pseudo']*pseudo.shape[0])
         
     elif batch_removal_method == 'scanorama':
+        import scanorama
         scanorama.integrate_scanpy([real, pseudo], dimred = dim)
         table1 = pd.DataFrame(real.obsm['X_scanorama'], index=real.obs.index.values)
         table2 = pd.DataFrame(pseudo.obsm['X_scanorama'], index=pseudo.obs.index.values)
@@ -285,7 +293,10 @@ def data_integration(real,
                                    epoch_n=autoencoder_epoches, 
                                    loss_fn=loss_ae, 
                                    optimizer=optimizer_ae, 
-                                   data=data).detach().numpy()
+                                   data=data,
+                                   cpu_num=cpu_num,
+                                   device=AE_device
+                                  ).detach().numpy()
             if scale == True:
                 embedding = (embedding-embedding.mean(axis=0))/embedding.std(axis=0)
             table = pd.DataFrame(embedding, index=[str(i)[:-2] for i in adata.obs.index])
@@ -323,7 +334,10 @@ def data_integration(real,
                                    epoch_n=autoencoder_epoches, 
                                    loss_fn=loss_ae, 
                                    optimizer=optimizer_ae, 
-                                   data=data).detach().numpy()
+                                   data=data,
+                                   cpu_num=cpu_num,
+                                   device=AE_device
+                                  ).detach().numpy()
             if scale == True:
                 embedding = (embedding-embedding.mean(axis=0))/embedding.std(axis=0)
             table = pd.DataFrame(embedding, index=[str(i)[:-2] for i in adata.obs.index])

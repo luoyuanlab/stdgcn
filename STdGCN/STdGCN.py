@@ -7,6 +7,7 @@ import pickle
 
 from .__init__ import *
 
+   
 
 def run_STdGCN(paths,
                find_marker_genes_paras,
@@ -25,6 +26,8 @@ def run_STdGCN(paths,
                generate_new_pseudo_spots = True,
                fraction_pie_plot = False,
                cell_type_distribution_plot = True,
+               n_jobs = -1,
+               GCN_device = 'CPU'
               ):
 
     sc_path = paths['sc_path']
@@ -78,6 +81,7 @@ def run_STdGCN(paths,
                                               max_cell_number_in_spot = pseudo_spot_simulation_paras['max_cell_num_in_spot'],
                                               max_cell_types_in_spot = pseudo_spot_simulation_paras['max_cell_types_in_spot'],
                                               generation_method = pseudo_spot_simulation_paras['generation_method'],
+                                              n_jobs = n_jobs
                                               )
         data_file = open(output_path+'/pseudo_ST.pkl','wb')
         pickle.dump(pseudo_adata, data_file)
@@ -142,6 +146,8 @@ def run_STdGCN(paths,
                                       dim = min(integration_for_adj_paras['dim'], int(ST_adata_filter_norm.shape[1]/2)), 
                                       dimensionality_reduction_method=integration_for_adj_paras['dimensionality_reduction_method'],
                                       scale=integration_for_adj_paras['scale'],
+                                      cpu_num=n_jobs,
+                                      AE_device=GCN_device
                                       )
     
     A_inter_exp =  inter_adj(ST_integration, 
@@ -179,7 +185,7 @@ def run_STdGCN(paths,
 
     adj_alpha = 1
     adj_beta = 1
-    diag_power = 10
+    diag_power = 20
     adj_balance = (1+adj_alpha+adj_beta)*diag_power
     adj_exp = torch.tensor(adj_inter_exp+adj_alpha*adj_pseudo_intra_exp+adj_beta*adj_real_intra_exp)/adj_balance + torch.eye(adj_inter_exp.shape[0])
     adj_sp = torch.tensor(adj_intra_space)/diag_power + torch.eye(adj_intra_space.shape[0])
@@ -195,7 +201,9 @@ def run_STdGCN(paths,
                                                     batch_removal_method=integration_for_feature_paras['batch_removal_method'], 
                                                     dim=min(int(ST_adata_filter_norm.shape[1]*1/2), integration_for_feature_paras['dim']), 
                                                     dimensionality_reduction_method=integration_for_feature_paras['dimensionality_reduction_method'], 
-                                                    scale=integration_for_feature_paras['scale']
+                                                    scale=integration_for_feature_paras['scale'],
+                                                    cpu_num=n_jobs,
+                                                    AE_device=GCN_device
                                                    )
     feature = torch.tensor(ST_integration_batch_removed.iloc[:, 3:].values)
     
@@ -214,12 +222,12 @@ def run_STdGCN(paths,
     nesterov = GCN_paras['nesterov']
     early_stopping_patience = GCN_paras['early_stopping_patience']
     clip_grad_max_norm = GCN_paras['clip_grad_max_norm']
-    LambdaLR_scheduler_coefficient = GCN_paras['LambdaLR_scheduler_coefficient']
-    ReduceLROnPlateau_factor = 0.3
-    ReduceLROnPlateau_patience = 3
-    scheduler = 'scheduler_LambdaLR'
+    LambdaLR_scheduler_coefficient = 0.997
+    ReduceLROnPlateau_factor = 0.1
+    ReduceLROnPlateau_patience = 5
+    scheduler = 'scheduler_ReduceLROnPlateau'
     print_epoch_step = GCN_paras['print_loss_epoch_step']
-    cpu_num = GCN_paras['cpu_num']
+    cpu_num = n_jobs
     
     model = conGCN(nfeat = input_layer, 
                    nhid = hidden_layer, 
@@ -253,7 +261,7 @@ def run_STdGCN(paths,
     else:
         scheduler = None
     
-    loss_fn1 = JSD()
+    loss_fn1 = nn.KLDivLoss(reduction = 'mean')
 
     train_valid_len = pseudo_adata.shape[0]
     test_len = ST_adata_filter.shape[0]
@@ -280,6 +288,7 @@ def run_STdGCN(paths,
                                                 load_test_groundtruth = load_test_groundtruth,
                                                 print_epoch_step = print_epoch_step,
                                                 cpu_num = cpu_num,
+                                                GCN_device = GCN_device
                                                )
     
     loss_table = pd.DataFrame(loss, columns=['train', 'valid', 'test'])
@@ -313,5 +322,7 @@ def run_STdGCN(paths,
         plot_scatter_by_type(pred_use, cell_type_list, coordinates, point_size=300, file_path=output_path, if_show=False)
     
     ST_adata_filter_norm.obsm['predict_result'] = np.exp(output1[:test_len].detach().numpy())
+    
+    torch.cuda.empty_cache()
     
     return ST_adata_filter_norm

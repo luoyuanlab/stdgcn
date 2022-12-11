@@ -4,6 +4,7 @@ import numpy as np
 from torch.autograd import Variable
 import math
 import time
+import multiprocessing
 from torch.nn.parameter import Parameter
 from torch.nn.modules.module import Module
 import torch.nn.functional as F
@@ -159,16 +160,34 @@ def conGCN_train(model,
                  clip_grad_max_norm = 1,
                  load_test_groundtruth = False,
                  print_epoch_step = 1,
-                 cpu_num = 10,
+                 cpu_num = -1,
+                 GCN_device = 'CPU'
                 ):
     
-    torch.set_num_threads(cpu_num)
+    if GCN_device == 'CPU':
+        device = torch.device("cpu")
+        print('Use CPU as device.')
+    else:
+        if torch.cuda.is_available():
+            device = torch.device("cuda")
+            print('Use GPU as device.')
+        else:
+            device = torch.device("cpu")
+            print('Use CPU as device.')
     
-    if torch.cuda.is_available():
-        model = model.cuda()
+    if cpu_num == -1:
+        cores = multiprocessing.cpu_count()
+        torch.set_num_threads(cores)
+    else:
+        torch.set_num_threads(cpu_num)
+    
+    model = model.to(device)
+    adjs = [adj.to(device) for adj in adjs]
+    feature = feature.to(device)
+    label = label.to(device)
+    
     time_open = time.time()
 
-    ## train validation split
     train_idx = range(int(train_valid_len*train_valid_ratio))
     valid_idx = range(len(train_idx), train_valid_len)
     
@@ -177,19 +196,18 @@ def conGCN_train(model,
     loss = []
     para_list = []
     for epoch in range(epoch_n):
-        
-        if torch.cuda.is_available():
-            adjs = [Variable(adj.cuda()) for adj in adjs]
-        else:
-            adjs = [Variable(adj) for adj in adjs]
+        try:
+            torch.cuda.empty_cache()
+        except:
+            pass
             
         optimizer.zero_grad()
         output1, paras = model(feature.float(), adjs)
         
-        loss_train1 = loss_fn(output1[list(np.array(train_idx)+test_len)].exp(), label[list(np.array(train_idx)+test_len)].float())
-        loss_val1 = loss_fn(output1[list(np.array(valid_idx)+test_len)].exp(), label[list(np.array(valid_idx)+test_len)].float())
+        loss_train1 = loss_fn(output1[list(np.array(train_idx)+test_len)], label[list(np.array(train_idx)+test_len)].float())
+        loss_val1 = loss_fn(output1[list(np.array(valid_idx)+test_len)], label[list(np.array(valid_idx)+test_len)].float())
         if load_test_groundtruth == True: 
-            loss_test1 = loss_fn(output1[:test_len].exp(), label[:test_len].float())
+            loss_test1 = loss_fn(output1[:test_len], label[:test_len].float())
             loss.append([loss_train1.item(), loss_val1.item(), loss_test1.item()])
         else:
             loss.append([loss_train1.item(), loss_val1.item(), None])
@@ -239,9 +257,9 @@ def conGCN_train(model,
           'loss_val: {:.4f}'.format(loss_val1.item()),
           end = '\t'
          )
-    if load_test_groundtruth == True:
-        print("Test loss= {:.4f}".format(loss_test1.item()), end = '\t')
+    print("Test loss= {:.4f}".format(loss_test1.item()), end = '\t')
     print('time: {:.4f}s'.format(time.time() - time_open))
+    
+    torch.cuda.empty_cache()
         
-    return output1, loss, model
-
+    return output1.cpu(), loss, model.cpu()
