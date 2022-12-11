@@ -224,9 +224,8 @@ Parameters:
 'nesterov': [bool]. Enables Nesterov momentum.
 'early_stopping_patience': [int]. Early stopping epochs.
 'clip_grad_max_norm': [float]. Clips gradient norm of an iterable of parameters.
-'LambdaLR_scheduler_coefficient': [float]. The coefficent of the LambdaLR scheduler fucntion:  lr(epoch) = [LambdaLR_scheduler_coefficient] ^ epoch_n × learning_rate_SGD. 
+#'LambdaLR_scheduler_coefficient': [float]. The coefficent of the LambdaLR scheduler fucntion:  lr(epoch) = [LambdaLR_scheduler_coefficient] ^ epoch_n × learning_rate_SGD. 
 'print_loss_epoch_step': [int]. Print the loss value at every 'print_epoch_step' epoch.
-'cpu_num': [int]. Set the number of threads used for intraop parallelism on CPU.
 '''
 GCN_paras = {
     'epoch_n': 3000,
@@ -234,16 +233,15 @@ GCN_paras = {
     'common_hid_layers_num': 1,
     'fcnn_hid_layers_num': 1,
     'dropout': 0,
-    'learning_rate_SGD': 5e-1,
+    'learning_rate_SGD': 2e-1,
     'weight_decay_SGD': 3e-4,
     'momentum': 0.9,
     'dampening': 0,
     'nesterov': True,
     'early_stopping_patience': 20,
     'clip_grad_max_norm': 1,
-    'LambdaLR_scheduler_coefficient': 0.997,
-    'print_loss_epoch_step': 10,
-    'cpu_num': 10,
+    #'LambdaLR_scheduler_coefficient': 0.997,
+    'print_loss_epoch_step': 20,
 }
 
 
@@ -263,25 +261,30 @@ Parameters
                     spot number is very large. For 1,000 spots, the plotting time is less than 3 minutes; for 2,000 spots, the plotting time is about 20 minutes; for 3,000 spots, it takes
                     about one hour.
 'cell_type_distribution_plot': [bool]. Select whether you need to draw the scatter plot of the predicted results for each cell type.
+'n_jobs': [int]. Set the number of threads used for intraop parallelism on CPU. 'n_jobs=-1' represents using all CPUs.
+'GCN_device': ['GPU', 'CPU']. Select the device used to run GCN networks. 
 '''
 results =  run_STdGCN(paths,
-                          load_test_groundtruth = True,
-                          use_marker_genes = True,
-                          external_genes = False,
-                          find_marker_genes_paras = find_marker_genes_paras,
-                          generate_new_pseudo_spots = False, 
-                          pseudo_spot_simulation_paras = pseudo_spot_simulation_paras,
-                          data_normalization_paras = data_normalization_paras,
-                          integration_for_adj_paras = integration_for_adj_paras,
-                          inter_exp_adj_paras = inter_exp_adj_paras,
-                          spatial_adj_paras = spatial_adj_paras,
-                          real_intra_exp_adj_paras = real_intra_exp_adj_paras,
-                          pseudo_intra_exp_adj_paras = pseudo_intra_exp_adj_paras,
-                          integration_for_feature_paras = integration_for_feature_paras,
-                          GCN_paras = GCN_paras,
-                          fraction_pie_plot = True,
-                          cell_type_distribution_plot = True
-                         )
+                      load_test_groundtruth = True,
+                      use_marker_genes = True,
+                      external_genes = False,
+                      find_marker_genes_paras = find_marker_genes_paras,
+                      generate_new_pseudo_spots = False, 
+                      pseudo_spot_simulation_paras = pseudo_spot_simulation_paras,
+                      data_normalization_paras = data_normalization_paras,
+                      integration_for_adj_paras = integration_for_adj_paras,
+                      inter_exp_adj_paras = inter_exp_adj_paras,
+                      spatial_adj_paras = spatial_adj_paras,
+                      real_intra_exp_adj_paras = real_intra_exp_adj_paras,
+                      pseudo_intra_exp_adj_paras = pseudo_intra_exp_adj_paras,
+                      integration_for_feature_paras = integration_for_feature_paras,
+                      GCN_paras = GCN_paras,
+                      fraction_pie_plot = True,
+                      cell_type_distribution_plot = True,
+                      n_jobs = -1,
+                      GCN_device = 'GPU'
+                     )
 
 results.write_h5ad(paths['output_path']+'/results.h5ad')
+
 
