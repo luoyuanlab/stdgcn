@@ -300,7 +300,7 @@ def run_STdGCN(paths,
         ax.plot(loss_table.index, loss_table['test'], label='test')
     ax.set_xlabel('Epoch', fontsize = 20)
     ax.set_ylabel('Loss', fontsize = 20)
-    ax.set_title('Loss function ({})'.format(loss_fn1), fontsize = 20)
+    ax.set_title('Loss function curve', fontsize = 20)
     ax.legend(fontsize = 15)
     plt.tight_layout()
     plt.savefig(output_path+'/Loss_function.jpg', dpi=300)
