@@ -257,7 +257,8 @@ def conGCN_train(model,
           'loss_val: {:.4f}'.format(loss_val1.item()),
           end = '\t'
          )
-    print("Test loss= {:.4f}".format(loss_test1.item()), end = '\t')
+    if load_test_groundtruth == True:
+        print("Test loss= {:.4f}".format(loss_test1.item()), end = '\t')
     print('time: {:.4f}s'.format(time.time() - time_open))
     
     torch.cuda.empty_cache()
