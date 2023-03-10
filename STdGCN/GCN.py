@@ -10,8 +10,6 @@ from torch.nn.modules.module import Module
 import torch.nn.functional as F
 import copy
 
-from .model_utils import *
-
 
 
 class conGraphConvolutionlayer(Module):
