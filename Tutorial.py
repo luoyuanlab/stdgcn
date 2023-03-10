@@ -240,7 +240,6 @@ GCN_paras = {
     'nesterov': True,
     'early_stopping_patience': 20,
     'clip_grad_max_norm': 1,
-    #'LambdaLR_scheduler_coefficient': 0.997,
     'print_loss_epoch_step': 20,
 }
 
@@ -258,18 +257,18 @@ Parameters
                     you don't need to simulate new pseudo-spots and set 'generate_new_pseudo_spots'=False. When 'generate_new_pseudo_spots'=False, you need to pre-move the "pseudo_ST.pkl" 
                     to the 'output_path' so that STdGCN can directly load the pre-simulated pseudo-spots.
 'fraction_pie_plot': [bool]. Select whether you need to draw the pie plot of the predicted results. Based on our experience, we do not recommend to draw the pie plot when the predicted
-                    spot number is very large. For 1,000 spots, the plotting time is less than 3 minutes; for 2,000 spots, the plotting time is about 20 minutes; for 3,000 spots, it takes
-                    about one hour.
+                    spot number is very large. For 1,000 spots, the plotting time is less than 2 minutes; for 2,000 spots, the plotting time is about 10 minutes; for 3,000 spots, it takes
+                    about 30 minutes.
 'cell_type_distribution_plot': [bool]. Select whether you need to draw the scatter plot of the predicted results for each cell type.
 'n_jobs': [int]. Set the number of threads used for intraop parallelism on CPU. 'n_jobs=-1' represents using all CPUs.
 'GCN_device': ['GPU', 'CPU']. Select the device used to run GCN networks. 
 '''
 results =  run_STdGCN(paths,
-                      load_test_groundtruth = True,
+                      load_test_groundtruth = False,
                       use_marker_genes = True,
                       external_genes = False,
                       find_marker_genes_paras = find_marker_genes_paras,
-                      generate_new_pseudo_spots = False, 
+                      generate_new_pseudo_spots = True, 
                       pseudo_spot_simulation_paras = pseudo_spot_simulation_paras,
                       data_normalization_paras = data_normalization_paras,
                       integration_for_adj_paras = integration_for_adj_paras,
@@ -286,5 +285,3 @@ results =  run_STdGCN(paths,
                      )
 
 results.write_h5ad(paths['output_path']+'/results.h5ad')
-
-
