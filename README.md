@@ -43,7 +43,7 @@ A complete guide for running cell type deconvolution using STdGCN can be found i
 •	predict_result.csv: The predicted cell type proportions for the ST data.  
 •	results.h5ad: The predicted cell type proportions for the ST data.  
 •	predict_results_pie_plot.jpg: The pie plot visualization of the predicted ST data.  
-•	“cell type name”.jpg: The scatter plots show the predicted proportions of each cell type in the ST map.  
+•	cell type name.jpg: The scatter plots show the predicted proportions of each cell type in the ST map.  
 
 ## **References**  
 [1] Li, Y, Luo, Y. STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data. bioRxiv, 2023.2003.2010.532112 (2023).  
