@@ -1,7 +1,7 @@
 <img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Logo.jpg" height="160px" />  <br />
 #  **STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data**
 
-Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN) is a graph-based deep learning framework that leverages cell type profiles learned from single-cell data to deconvolve the cell type mixtures of spatial transcriptomics data. The manuscript of this software can be seen in biorXiv (https://www.biorxiv.org/content/10.1101/2023.03.10.532112v1).
+Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN) is a graph-based deep learning framework that leverages cell type profiles learned from single-cell data to deconvolve the cell type mixtures of spatial transcriptomics data. The manuscript of this software can be seen in biorXiv (https://www.biorxiv.org/content/10.1101/2023.03.10.532112v1) [1].
 
 ![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Figure%201.jpg)
 
@@ -22,7 +22,7 @@ math
 copy  
 
 ## **The example dataset**  
-The included spatial transcriptomic (ST) dataset is from Zhu et al. [1], which includes a seqFISH+ slice from the sub-ventricular zone (SVZ) of a mouse somatosensory (SS) region. The resolution of this dataset is single cell-level. We resampled the cells into multiple square pixel areas. Cells within each square pixel area were merged into a synthetic spot. We chose the 200 × 200 square pixel area for resampling. Spots with cells less than two were discarded. The raw single-cell ST data was also used as the single cell reference. All example data files are stored in “./data”
+The included spatial transcriptomic (ST) dataset is from Zhu et al. [2], which includes a seqFISH+ slice from the sub-ventricular zone (SVZ) of a mouse somatosensory (SS) region. The resolution of this dataset is single cell-level. We resampled the cells into multiple square pixel areas. Cells within each square pixel area were merged into a synthetic spot. We chose the 200 × 200 square pixel area for resampling. Spots with cells less than two were discarded. The raw single-cell ST data was also used as the single cell reference. All example data files are stored in “./data”
 
 ## **Run STdGCN**  
 A complete guide for running cell type deconvolution using STdGCN can be found in “Toturial.ipynb” and “Toturial.py”, including the detailed introductions and annotations of using STdGCN.
@@ -46,5 +46,6 @@ A complete guide for running cell type deconvolution using STdGCN can be found i
 •	“cell type name”.jpg: The scatter plots show the predicted proportions of each cell type in the ST map.  
 
 ## **References**  
-[1] Zhu Q, Shah S, Dries R, Cai L, Yuan GC. Identification of spatially associated subpopulations by combining scrnaseq and sequential fluorescence in situ hybridization data. *Nat Biotechnol* 2018.
+[1] Li, Y, Luo, Y. STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data. bioRxiv, 2023.2003.2010.532112 (2023).
+[2] Zhu Q, Shah S, Dries R, Cai L, Yuan GC. Identification of spatially associated subpopulations by combining scrnaseq and sequential fluorescence in situ hybridization data. *Nat Biotechnol* 2018.
 
