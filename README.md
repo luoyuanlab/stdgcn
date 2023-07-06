@@ -3,7 +3,7 @@
 
 Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN) is a graph-based deep learning framework that leverages cell type profiles learned from single-cell data to deconvolve the cell type mixtures of spatial transcriptomics data. The manuscript of this software is now available on biorXiv (https://www.biorxiv.org/content/10.1101/2023.03.10.532112v1) [1].
 
-![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Figure%201.jpg)
+![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Figure%201.tif)
 
 ## **Requirements**  
 torch == 1.11.0  
