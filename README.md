@@ -22,7 +22,7 @@ math
 copy  
 
 ## **The example dataset**  
-The included spatial transcriptomic (ST) dataset is from Zhu et al. [2], which includes a seqFISH+ slice from the sub-ventricular zone (SVZ) of a mouse somatosensory (SS) region. The resolution of this dataset is single cell-level. We resampled the cells into multiple square pixel areas. Cells within each square pixel area were merged into a synthetic spot. We chose the 200 × 200 square pixel area for resampling. Spots with cells less than two were discarded. The raw single-cell ST data was also used as the single cell reference. All example data files are stored in “./data”
+The included spatial transcriptomic (ST) dataset is from Zhu et al. (https://www.nature.com/articles/nbt.4260), which includes a seqFISH+ slice from the sub-ventricular zone (SVZ) of a mouse somatosensory (SS) region. The resolution of this dataset is single cell-level. We resampled the cells into multiple square pixel areas. Cells within each square pixel area were merged into a synthetic spot. We chose the 200 × 200 square pixel area for resampling. Spots with cells less than two were discarded. The raw single-cell ST data was also used as the single cell reference. All example data files are stored in “./data”
 
 ## **Run STdGCN**  
 A complete guide for running cell type deconvolution using STdGCN can be found in “Toturial.ipynb” and “Toturial.py”, including the detailed introductions and annotations of using STdGCN.
@@ -47,6 +47,3 @@ A complete guide for running cell type deconvolution using STdGCN can be found i
 
 ## **References**  
 [1] Li Y, Luo Y. Stdgcn: spatial transcriptomic cell-type deconvolution using graph convolutional networks. *Genome Biol.* (2024) 25:206. 
-
-[2] Zhu Q, Shah S, Dries R, Cai L, Yuan GC. Identification of spatially associated subpopulations by combining scrnaseq and sequential fluorescence in situ hybridization data. *Nat Biotechnol* 2018.
-
