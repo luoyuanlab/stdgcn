@@ -1,7 +1,7 @@
 <img src="https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Logo.jpg" height="160px" />  <br />
 #  **STdGCN: spatial transcriptomic cell-type deconvolution using graph convolutional networks**
 
-Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN) is a graph-based deep learning framework that leverages cell type profiles learned from single-cell data to deconvolve the cell type mixtures of spatial transcriptomics data. The manuscript of this software is now available on biorXiv (https://www.biorxiv.org/content/10.1101/2023.03.10.532112v1) [1].
+Spatial Transcriptomics deconvolution using Graph Convolutional Networks (STdGCN) is a graph-based deep learning framework that leverages cell type profiles learned from single-cell data to deconvolve the cell type mixtures of spatial transcriptomics data. The manuscript of this software is now available on Genome Biology (https://genomebiology.biomedcentral.com/articles/10.1186/s13059-024-03353-0) [1].
 
 ![Image text](https://github.com/luoyuanlab/stdgcn/blob/main/img_folder/Figure%201.jpg)
 
@@ -46,6 +46,6 @@ A complete guide for running cell type deconvolution using STdGCN can be found i
 •	[cell type name].jpg: The scatter plots show the predicted proportions of each cell type in the ST map.  
 
 ## **References**  
-[1] Li, Y, Luo, Y. STdGCN: accurate cell-type deconvolution using graph convolutional networks in spatial transcriptomic data. bioRxiv, 2023.2003.2010.532112 (2023).  
+[1] Li Y, Luo Y. Stdgcn: spatial transcriptomic cell-type deconvolution using graph convolutional networks. Genome Biol. (2024) 25:206. 
 [2] Zhu Q, Shah S, Dries R, Cai L, Yuan GC. Identification of spatially associated subpopulations by combining scrnaseq and sequential fluorescence in situ hybridization data. *Nat Biotechnol* 2018.
 
