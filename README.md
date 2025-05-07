@@ -47,5 +47,6 @@ A complete guide for running cell type deconvolution using STdGCN can be found i
 
 ## **References**  
 [1] Li Y, Luo Y. Stdgcn: spatial transcriptomic cell-type deconvolution using graph convolutional networks. Genome Biol. (2024) 25:206. 
+
 [2] Zhu Q, Shah S, Dries R, Cai L, Yuan GC. Identification of spatially associated subpopulations by combining scrnaseq and sequential fluorescence in situ hybridization data. *Nat Biotechnol* 2018.
 
