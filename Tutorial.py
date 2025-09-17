@@ -93,7 +93,7 @@ Parameters:
 'max_cell_types_in_spot': [int]. When 'generation_method'='celltype', choose the maximum number of cell types in a pseudo-spot.
 '''
 pseudo_spot_simulation_paras = {
-    'spot_num': 30000,
+    'spot_num': 5000,
     'min_cell_num_in_spot': 8,
     'max_cell_num_in_spot': 12,
     'generation_method': 'celltype',
@@ -280,7 +280,7 @@ results =  run_STdGCN(paths,
                       GCN_paras = GCN_paras,
                       fraction_pie_plot = True,
                       cell_type_distribution_plot = True,
-                      n_jobs = -1,
+                      n_jobs = 4,
                       GCN_device = 'GPU'
                      )
 
